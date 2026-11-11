@@ -31,9 +31,10 @@
       "goal": "Create the .NET solution (Seedfall.Core, Seedfall.Sim and their NUnit test projects, netstandard2.1 libraries) with a Vec3d type and an AssertVec.Near test helper.",
       "depends_on": [],
       "governed_by": "Architecture section 11 (code layout), section 2 (precision)",
-      "spec": null,
-      "status": "todo",
-      "attempts": 0
+      "spec": "tasks/specs/T003-vec3d.md",
+      "status": "passed",
+      "attempts": 1,
+      "summary": "Builder B (deepseek-coder-v2:16b) passed 24/24 on attempt 1. Builder A (qwen2.5-coder:7b) failed to compile on all 3 attempts (swapped ToString args, then a dropped semicolon repeated identically). No escalation. Run 1, controller: Claude, 2026-11-11."
     },
     {
       "id": "T004",

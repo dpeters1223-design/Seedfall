@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Seedfall.Core/Seedfall.Core.csproj" />
+    <Project Path="src/Seedfall.Sim/Seedfall.Sim.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Seedfall.Core.Tests/Seedfall.Core.Tests.csproj" />
+    <Project Path="tests/Seedfall.Sim.Tests/Seedfall.Sim.Tests.csproj" />
+  </Folder>
+</Solution>

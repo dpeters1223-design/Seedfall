@@ -38,3 +38,9 @@ test-results*.xml
 .vscode/
 .DS_Store
 Thumbs.db
+
+# .NET
+bin/
+obj/
+*.user
+TestResults/
