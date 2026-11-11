@@ -44,6 +44,26 @@ The player is the original seed probe; everything else grows from it, and losing
 - FTL is a late-game unlock earned through long-term progression, so there is always a next goal.
 - Major milestones (yes or no): found a place Earth can colonize? Built a colony? Helped transport colonists?
 
+### Why the probes exist (backstory)
+
+- Two breakthroughs make the seed probe program possible: a **new drive** that can sustain about 2G for years (working name "ion drive"; final name TBD), and **long-range light-speed signaling**, so a probe can finally report home from another star.
+- Before these, sending probes was pointless: they'd never arrive in a useful time, and you'd never hear what they found. Together, and with Earth in trouble, they launch the program.
+
+### Communication and travel ladder
+
+Communication and travel are a progression. Each rung is a discovery and a reward.
+
+1. **Start: range-limited light-speed signals.** Every player starts at Earth (or at a connected foundry). Messages travel at light speed, but a probe's transmitter only reaches so far. Beyond that range a probe is out of contact: it acts on its last directive, and nobody hears what it finds. A courier probe can physically carry news back.
+2. **Relay stations.** Players build relays, and **every relay is open to all players**: anyone's messages can bounce off anyone's relay. Builders get credit and rewards, and everyone benefits. Relays are shared infrastructure, so attacking one hurts everyone.
+   - **A foundry can only be built where a relay path reaches Earth.** So every foundry is connected, new players starting at one can reach Earth, and backups stored there stay reachable.
+3. **FTL travel for probes.** Probes outrun light, but messages still don't. The fastest news is a courier.
+4. **Wormholes and beyond.** Near-instant links for travel and messages, and whatever comes after.
+
+Consequences that fall out of this:
+- Orders to distant probes arrive late, which is why probes need autonomy, and where going rogue becomes possible.
+- What you know about a distant system is only as fresh as your last message from it.
+- Earth's crises reach players when the broadcast reaches them, so far-flung players hear late.
+
 ### Shared, growing universe
 
 - One persistent universe shared by all players.
