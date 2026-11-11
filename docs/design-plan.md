@@ -46,7 +46,7 @@ The player is the original seed probe; everything else grows from it, and losing
 
 ### Why the probes exist (backstory)
 
-- Two breakthroughs make the seed probe program possible: a **new drive** that can sustain about 2G for years (working name "ion drive"; final name TBD), and **long-range light-speed signaling**, so a probe can finally report home from another star.
+- Two breakthroughs make the seed probe program possible: a **new drive** that can sustain about 2G for years (working name "ion drive"; final name TBD), and **long-range light-speed signaling** that reaches about 5 light-years, so a probe at the nearest stars (Alpha Centauri, Barnard's Star) can finally report home. Long for Earth, short for a galaxy: everything farther needs relays.
 - Before these, sending probes was pointless: they'd never arrive in a useful time, and you'd never hear what they found. Together, and with Earth in trouble, they launch the program.
 
 ### Communication and travel ladder
@@ -55,7 +55,7 @@ Communication and travel are a progression. Each rung is a discovery and a rewar
 
 1. **Start: range-limited light-speed signals.** Every player starts at Earth (or at a connected foundry). Messages travel at light speed, but a probe's transmitter only reaches so far. Beyond that range a probe is out of contact: it acts on its last directive, and nobody hears what it finds. A courier probe can physically carry news back.
 2. **Relay stations.** Players build relays, and **every relay is open to all players**: anyone's messages can bounce off anyone's relay. Builders get credit and rewards, and everyone benefits. Relays are shared infrastructure, so attacking one hurts everyone.
-   - **A foundry can only be built where a relay path reaches Earth.** So every foundry is connected, new players starting at one can reach Earth, and backups stored there stay reachable.
+   - **A foundry can only be built where a relay path reaches Earth**, and once it's built, the relays on that path are **anchored** and can't be destroyed. So a foundry can never be cut off: new players starting there are always connected, and backups stored there are always reachable.
 3. **FTL travel for probes.** Probes outrun light, but messages still don't. The fastest news is a courier.
 4. **Wormholes and beyond.** Near-instant links for travel and messages, and whatever comes after.
 
@@ -166,7 +166,7 @@ Seedfall looks like realistic sci-fi, and each star system has its own color pal
 
 ### Decisions (chosen as the simplest to build; revisit as we go)
 
-- **Galaxy map = a top-down view of the real 3D positions.** The simulation already stores positions in 3D (see T001's `Vector3`), so the map is just a second camera looking straight down at the same data, with a small marker for each star's height above or below the plane. There's no separate 2D layout to keep in sync. The layered zoom (galaxy → system → planet) can come later on the same camera.
+- **Galaxy map = a top-down view of the real 3D positions.** The simulation already stores positions in 3D (double-precision `Vec3d`; see docs/architecture.md), so the map is just a second camera looking straight down at the same data, with a small marker for each star's height above or below the plane. There's no separate 2D layout to keep in sync. The layered zoom (galaxy → system → planet) can come later on the same camera.
 - **HUD: start with the fewest panels, built in Unity's UI Toolkit.** Flat panels only at first. Holographic touches are styling added later, not structure. Add panels one at a time as features need them, and check the clutter when real art arrives.
 - **URP switch: when the first visual task comes up, not now.** Every task so far is pure logic with no rendering, so switching now buys nothing. The first task that touches visuals starts by moving the project to URP.
 
@@ -187,28 +187,29 @@ The proof of concept runs on one server, built as separate modules so it can lat
 
 ## AI build system
 
-One commercial controller directs two local builder models, and the Unity test run, not either model, decides whether work passes.
+One commercial controller writes the specs and the tests, and two local models implement. The tests decide whether work passes. Revised Nov 11, 2026 after T001 run 1 (see `tasks/runs/T001-run1.md`) and recorded in `docs/architecture.md`.
 
 | Agent | Model | Job |
 | --- | --- | --- |
-| Controller | OpenAI model (David has free tokens) | Holds the plan and task queue, writes each task spec, judges pass or fail from test reports |
-| Builder A (implementer) | Qwen2.5-Coder (local) | Writes code or scene changes from the spec |
-| Builder B (critic) | DeepSeek-Coder (local) | Writes tests and tries to break Builder A's work |
+| Controller | OpenAI model (David has free tokens) | Holds the plan and queue, writes each task's spec **and tests**, chooses between passing builds, fixes tasks the builders can't |
+| Builder A | Qwen2.5-Coder 7B (local) | Implements the spec |
+| Builder B | DeepSeek-Coder-V2 16B (local) | Implements the same spec independently |
 
 ### The loop
 
-1. Controller picks the next task and writes a spec.
-2. Builder A implements it.
-3. Builder B reviews it and writes tests.
-4. Unity runs the tests (edit-mode for logic, play-mode for scene behavior).
-5. Controller accepts the work, or sends it back with the failure log attached.
-6. On later tasks the builders swap roles, so each both builds and attacks (the GAN-style part).
+1. The controller picks the next task and writes the spec and its tests. The tests must compile against an empty stub of the contract before any builder sees them.
+2. Both builders implement the task independently.
+3. The tests run: `dotnet test` for game logic (seconds, no Unity), and Unity edit-mode/play-mode tests for client work only.
+4. Each failing build gets feedback **one error at a time**: the exact line, expected vs actual. It's retried up to the attempt limit.
+5. If one build passes, it's accepted. If both pass, the controller picks the better one. If both still fail, the controller fixes the task itself (or rewrites the spec) instead of blocking.
+
+The adversarial part comes from the two independent builds rather than a critic model: where they disagree on the same inputs, the spec is ambiguous or one has a bug. Later, tools that deliberately break the code check that the tests notice.
 
 ### Running it
 
-- Local models run through Ollama or vLLM on the server, each exposed as a local API.
-- A Python orchestrator script lives on the server. It reads the task queue, calls the controller and builders, runs Unity tests from the command line, logs every step, and writes a status file David can check over VPN.
-- Timeouts on every call so a stalled model can't freeze the queue.
+- The local models run through Ollama on bigiron, CPU-only (`num_gpu: 0`).
+- A Python orchestrator script on the server reads the task queue, calls the controller and builders, runs the tests, logs every step, and writes a status file David can check over VPN.
+- Every call has a timeout, so a stalled model can't freeze the queue.
 - Goal: autonomous runs of 24 to 30 hours once the loop is proven.
 
 ## Roadmap
@@ -232,7 +233,7 @@ Run the loop by hand first, automate only the proven parts, and schedule an over
 ### Server and environment
 
 - [x] 1\. Get server specs (GPU memory, RAM, storage) and confirm VPN access from the office.
-- [x] 2\. Install Ollama or vLLM; pull Qwen2.5-Coder (implementer) and DeepSeek-Coder (critic).
+- [x] 2\. Install Ollama or vLLM; pull Qwen2.5-Coder and DeepSeek-Coder (now both implementers; see AI build system).
 - [x] 3\. Confirm the local model APIs respond over VPN, with timeouts set.
 - [x] 4\. Create the Unity project on the server with a clean folder structure and the Unity Test Framework enabled.
 
