@@ -144,10 +144,11 @@ Seedfall looks like realistic sci-fi, and each star system has its own color pal
 - **Probe voice:** a text mission log by default, with voiced lines saved for the big moments (a rogue warning, a discovery, a crisis). This matches the wry, hopeful tone.
 - **Controller support** shapes the UI from the start. Every panel needs focus navigation, even though mouse and keyboard come first.
 
-### Open questions from the survey
+### Decisions (chosen as the simplest to build; revisit as we go)
 
-- The galaxy map's main pick is a 2D star chart, while the space camera is a 3D chase. Decide whether the 2D chart is a flattened view of real 3D positions, or a stylized layout.
-- Dense HUD plus realistic visuals can fight each other. Prototype one HUD screen early and check that the scene still reads underneath it.
+- **Galaxy map = a top-down view of the real 3D positions.** The simulation already stores positions in 3D (see T001's `Vector3`), so the map is just a second camera looking straight down at the same data, with a small marker for each star's height above or below the plane. There's no separate 2D layout to keep in sync. The layered zoom (galaxy → system → planet) can come later on the same camera.
+- **HUD: start with the fewest panels, built in Unity's UI Toolkit.** Flat panels only at first. Holographic touches are styling added later, not structure. Add panels one at a time as features need them, and check the clutter when real art arrives.
+- **URP switch: when the first visual task comes up, not now.** Every task so far is pure logic with no rendering, so switching now buys nothing. The first task that touches visuals starts by moving the project to URP.
 
 ## Technical architecture
 
