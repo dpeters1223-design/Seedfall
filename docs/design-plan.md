@@ -82,6 +82,73 @@ Cooperation should pay better than conflict, and every crisis is a choice with l
 - Ignoring a crisis can cost resources, standing and Earth's cooperation.
 - Colonies remember how they were treated.
 
+## Interface and look
+
+From David's interface and look survey, Nov 11, 2026. Where two options were picked, the first is the main direction and the second is a secondary influence.
+
+### Direction in one paragraph
+
+Seedfall looks like realistic sci-fi, and each star system has its own color palette, so arriving somewhere new looks different. The tone is hopeful exploration delivered with wry humor: a probe with a personality. The seed probe is organic and printer-grown with a sleek finish. The interface is clean flat panels with holographic touches. It's dense with data, but each panel shows what's relevant where you are. It's built for mouse and keyboard first, with controller support. The music is an adaptive synth score that shifts with danger, discovery and travel.
+
+### Visual style
+
+| ID | Question | Main | Also |
+| --- | --- | --- | --- |
+| VIS-01 | Art style | Realistic sci-fi | |
+| VIS-02 | Color mood | Varies by star system | |
+| VIS-03 | Tone | Wry humor | Hopeful exploration |
+| VIS-04 | Seed probe look | Organic / printer-grown | Sleek and elegant |
+
+### Space view and maps
+
+| ID | Question | Main | Also |
+| --- | --- | --- | --- |
+| SPC-01 | Camera in space | Third-person chase | Switchable (chase to fly, map to plan) |
+| SPC-02 | Galaxy map | 2D star chart | Layered zoom (galaxy → system → planet) |
+| SPC-03 | Long sub-light trips | Watchable time-lapse | Arrival report with choices from en route |
+
+### Interface and controls
+
+| ID | Question | Main | Also |
+| --- | --- | --- | --- |
+| HUD-01 | HUD density | Dense, data-rich | |
+| HUD-02 | Interface style | Clean flat panels | In-world holograms |
+| HUD-03 | Giving directives | Click a target, pick a command | Command console |
+| HUD-04 | Fleet view | Table, family tree and map, tabbed | Sortable table |
+| HUD-05 | Resources on screen | Only where relevant | Always-visible top bar |
+| HUD-06 | How probes talk | Text log, voice for big moments | Text message log |
+| HUD-07 | Primary input | Mouse and keyboard | Controller |
+
+### Planet surfaces
+
+| ID | Question | Main | Also |
+| --- | --- | --- | --- |
+| SRF-01 | Surface camera | Third-person | |
+| SRF-02 | Surface detail | Procedural terrain plus authored set pieces | |
+
+### Sound and performance
+
+| ID | Question | Main | Also |
+| --- | --- | --- | --- |
+| AUD-01 | Music | Adaptive | Ambient synth |
+| AUD-02 | Target hardware | Mid-range gaming PC | High-end PCs |
+
+### What this implies for the build
+
+- **Render pipeline.** Realistic visuals on mid-range PCs point to Unity's **URP** (Universal Render Pipeline) with good lighting and post-processing, rather than HDRP. Revisit HDRP only if the high-end target becomes the main one. The project currently uses the default template, so switch before any art goes in.
+- **Per-system palettes** belong in world generation as data: each generated system carries its own light color and sky/nebula palette, not a single global look.
+- **Dense data with context.** Build the HUD as composable panels that come and go with context (factory, foundry, fleet, travel). A slim always-on resource bar is the one fixed element. Keep it readable at 1080p.
+- **Two ways to command.** Context menus are the primary path. A text console calls the same command layer underneath, which also makes directives easy to test and to script for the AI build loop.
+- **Fleet view** is three tabs over one data model: a table (default), the replication family tree, and map icons.
+- **Long trips:** an accelerated time-lapse you can watch, plus an arrival report that lists any choices that came up on the way.
+- **Probe voice:** a text mission log by default, with voiced lines saved for the big moments (a rogue warning, a discovery, a crisis). This matches the wry, hopeful tone.
+- **Controller support** shapes the UI from the start. Every panel needs focus navigation, even though mouse and keyboard come first.
+
+### Open questions from the survey
+
+- The galaxy map's main pick is a 2D star chart, while the space camera is a 3D chase. Decide whether the 2D chart is a flattened view of real 3D positions, or a stylized layout.
+- Dense HUD plus realistic visuals can fight each other. Prototype one HUD screen early and check that the scene still reads underneath it.
+
 ## Technical architecture
 
 The proof of concept runs on one server, built as separate modules so it can later split across multiple stacks and locations.
