@@ -1,0 +1,40 @@
+# Unity
+unity/[Ll]ibrary/
+unity/[Tt]emp/
+unity/[Oo]bj/
+unity/[Bb]uild/
+unity/[Bb]uilds/
+unity/[Ll]ogs/
+unity/[Uu]ser[Ss]ettings/
+unity/[Mm]emoryCaptures/
+unity/*.csproj
+unity/*.sln
+unity/*.slnx
+unity/*.user
+unity/*.pidb
+unity/*.booproj
+unity/*.unityproj
+unity/.vs/
+unity/.idea/
+unity/*.apk
+unity/*.aab
+unity/crashlytics-build.properties
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Orchestrator / Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Run output
+logs/*
+!logs/.gitkeep
+test-results*.xml
+
+# Editors / OS
+.vscode/
+.DS_Store
+Thumbs.db

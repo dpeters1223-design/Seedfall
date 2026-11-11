@@ -1,0 +1,25 @@
+{
+  "_format": "One entry per task. status: todo | in_progress | passed | failed | blocked. depends_on lists task IDs that must be 'passed' first. Edit by hand.",
+  "tasks": [
+    {
+      "id": "T001",
+      "goal": "A probe moves from one point toward another at a fixed speed and stops exactly on arrival.",
+      "depends_on": [],
+      "spec": "tasks/specs/T001-probe-movement.md",
+      "expected_output": "unity/Assets/Seedfall/Core/Probe.cs and unity/Assets/Seedfall/Tests/EditMode/ProbeMovementTests.cs",
+      "check": "Unity edit-mode tests in Seedfall.Tests.EditMode all pass; project compiles with no errors.",
+      "status": "todo",
+      "attempts": 0
+    },
+    {
+      "id": "T002",
+      "goal": "A probe mining an asteroid adds ore to its cargo and removes it from the asteroid, never exceeding cargo capacity or the asteroid's remaining ore.",
+      "depends_on": ["T001"],
+      "spec": "tasks/specs/T002-probe-mining.md",
+      "expected_output": "unity/Assets/Seedfall/Core/Asteroid.cs, mining members added to Probe.cs, and unity/Assets/Seedfall/Tests/EditMode/ProbeMiningTests.cs",
+      "check": "Unity edit-mode tests in Seedfall.Tests.EditMode all pass, including T001's; project compiles with no errors.",
+      "status": "todo",
+      "attempts": 0
+    }
+  ]
+}
