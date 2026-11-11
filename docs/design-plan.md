@@ -144,9 +144,9 @@ Run the loop by hand first, automate only the proven parts, and schedule an over
 ### Server and environment
 
 - [x] 1\. Get server specs (GPU memory, RAM, storage) and confirm VPN access from the office.
-- [ ] 2\. Install Ollama or vLLM; pull Qwen2.5-Coder (implementer) and DeepSeek-Coder (critic).
-- [ ] 3\. Confirm the local model APIs respond over VPN, with timeouts set.
-- [ ] 4\. Create the Unity project on the server with a clean folder structure and the Unity Test Framework enabled.
+- [x] 2\. Install Ollama or vLLM; pull Qwen2.5-Coder (implementer) and DeepSeek-Coder (critic).
+- [x] 3\. Confirm the local model APIs respond over VPN, with timeouts set.
+- [x] 4\. Create the Unity project on the server with a clean folder structure and the Unity Test Framework enabled.
 
 ### Task queue and controller
 
